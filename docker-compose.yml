@@ -1,11 +1,27 @@
 services:
-  streamlit-app:
+  # streamlit-app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #
+  #   ports:
+  #     - "8501:8501"
+  #
+  #   env_file:
+  #     - .env
+  #
+  #   restart: unless-stopped
+  #
+  #   volumes:
+  #     - ./src:/app/src
+
+  api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: apps/apis/Dockerfile
 
     ports:
-      - "8501:8501"
+      - "8000:8000"
 
     env_file:
       - .env
@@ -13,4 +29,6 @@ services:
     restart: unless-stopped
 
     volumes:
-      - ./src:/app/src
+      - ./apps/apis/src:/app/apps/apis/src
+
+    command: uvicorn apis.app:app --host 0.0.0.0 --port 8000 --reload
